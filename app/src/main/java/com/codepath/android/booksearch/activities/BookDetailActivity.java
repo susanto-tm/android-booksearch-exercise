@@ -1,13 +1,20 @@
 package com.codepath.android.booksearch.activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.codepath.android.booksearch.R;
+import com.codepath.android.booksearch.models.Book;
+
+import org.parceler.Parcels;
 
 public class BookDetailActivity extends AppCompatActivity {
     private ImageView ivBookCover;
@@ -23,9 +30,21 @@ public class BookDetailActivity extends AppCompatActivity {
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvAuthor = (TextView) findViewById(R.id.tvAuthor);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar);
+
         // Extract book object from intent extras
+        Book book = Parcels.unwrap(getIntent().getParcelableExtra(BookListActivity.book_extra));
 
         // Use book object to populate data into views
+        Glide.with(this).load(book.getCoverUrl())
+                .placeholder(R.drawable.ic_nocover)
+                .into(ivBookCover);
+
+        tvTitle.setText(book.getTitle());
+        tvAuthor.setText(book.getAuthor());
+        toolbar.setTitleTextColor(Color.WHITE);
+        getSupportActionBar().setTitle(book.getTitle());
     }
 
 
